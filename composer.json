@@ -1,0 +1,14 @@
+{
+    "name": "agoalofalife/fnsapi",
+    "description": "Interaction with API FNS",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "agoalofalife",
+            "email": "agoalofalife@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
