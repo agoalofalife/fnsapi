@@ -1,6 +1,10 @@
 {
     "name": "agoalofalife/fnsapi",
-    "description": "Interaction with API FNS",
+    "description": "Interaction with API FNS",],
+    "keywords": [
+        "fns",
+        "soap"
+    ],
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -10,5 +14,15 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Fns\\" : "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    }
 }
