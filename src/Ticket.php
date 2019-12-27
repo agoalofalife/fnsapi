@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Fns;
 
-class Ticket
+use Fns\Contract\OutXml;
+
+class Ticket implements OutXml
 {
     /**
      * Сумма чека в копейках
@@ -202,5 +204,17 @@ class Ticket
     {
         $this->fiscalSign = $fiscalSign;
         return $this;
+    }
+
+    public function asXml() : string
+    {
+        return "<tns:CheckTicketInfo>
+                                <tns:Sum>{$this->getSum()}</tns:Sum>
+                                <tns:Date>{$this->getDate()}</tns:Date>
+                                <tns:Fn>{$this->getFn()}</tns:Fn>
+                                <tns:TypeOperation>{$this->getTypeOperation()}</tns:TypeOperation>
+                                <tns:FiscalDocumentId>{$this->getFiscalDocumentId()}</tns:FiscalDocumentId>
+                                <tns:FiscalSign>{$this->getFiscalSign()}</tns:FiscalSign>
+                </tns:CheckTicketInfo>";
     }
 }
