@@ -1,6 +1,6 @@
 {
     "name": "agoalofalife/fnsapi",
-    "description": "Interaction with API FNS",],
+    "description": "Interaction with API FNS",
     "keywords": [
         "fns",
         "soap"
@@ -14,7 +14,10 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+        "psr/cache": "~1.0",
+        "ext-json": "*"
+    },
     "autoload": {
         "psr-4": {
             "Fns\\" : "src/"
