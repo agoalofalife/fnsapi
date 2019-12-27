@@ -52,7 +52,7 @@ class AuthRequest
     public function authenticate() : void
     {
         $response = $this->client->__soapCall("GetMessage", $this->getBodyXml());
-        $this->xmlResponse = simplexml_load_string($response->Message->any, 'Fns\AuthXmlResponse');
+        $this->xmlResponse = simplexml_load_string($response->Message->any, AuthXmlResponse::class);
 
         if ($this->xmlResponse->isError()) {
             $this->exceptionGetToken();
