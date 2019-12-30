@@ -15,7 +15,8 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "psr/cache": "~1.0",
+        "php": ">=7.1.0",
+        "psr/cache": "^1.0",
         "ext-json": "*"
     },
     "autoload": {
