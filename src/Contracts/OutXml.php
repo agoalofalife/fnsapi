@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Fns\Contract;
+namespace Fns\Contracts;
 
 interface OutXml
 {

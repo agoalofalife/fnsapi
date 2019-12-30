@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Fns;
 
-use Fns\Contract\OutXml;
+use Fns\Contracts\OutXml;
 
 class Ticket implements OutXml
 {
@@ -93,6 +93,7 @@ class Ticket implements OutXml
      *
      * Дата и время операции в формате yyyy-MM-dd'T'HH':'mm':'ss
      *
+     * example 2019-12-20T00:28:39
      * @param string $date
      * @return self
      */
@@ -208,13 +209,11 @@ class Ticket implements OutXml
 
     public function asXml() : string
     {
-        return "<tns:CheckTicketInfo>
-                                <tns:Sum>{$this->getSum()}</tns:Sum>
+        return "<tns:Sum>{$this->getSum()}</tns:Sum>
                                 <tns:Date>{$this->getDate()}</tns:Date>
                                 <tns:Fn>{$this->getFn()}</tns:Fn>
                                 <tns:TypeOperation>{$this->getTypeOperation()}</tns:TypeOperation>
                                 <tns:FiscalDocumentId>{$this->getFiscalDocumentId()}</tns:FiscalDocumentId>
-                                <tns:FiscalSign>{$this->getFiscalSign()}</tns:FiscalSign>
-                </tns:CheckTicketInfo>";
+                                <tns:FiscalSign>{$this->getFiscalSign()}</tns:FiscalSign>";
     }
 }
