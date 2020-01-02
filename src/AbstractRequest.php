@@ -3,15 +3,14 @@ declare(strict_types=1);
 
 namespace Fns;
 
-
 use Psr\SimpleCache\CacheInterface;
 use SoapClient;
 
 abstract class AbstractRequest
 {
     private $wsdl = 'https://openapi.nalog.ru:8090/open-api/ais3/KktService/0.1?wsdl';
-    private $storage;
-    private $userToken;
+    protected $storage;
+    protected $userToken;
     protected $client;
 
     public function __construct(string $userToken, CacheInterface $cache)
