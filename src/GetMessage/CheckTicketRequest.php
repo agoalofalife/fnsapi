@@ -3,28 +3,23 @@ declare(strict_types=1);
 
 namespace Fns\GetMessage;
 
-use Exception;
 use Fns\Contracts\RequestsManager;
+use Fns\Contracts\ResponseSendMessage;
+use Fns\Contracts\SetTimeoutHandler;
 use Fns\Contracts\TimeoutStrategyHandler;
-use Psr\SimpleCache\CacheInterface;
 
-class CheckTicketRequest extends GetMessageRequest implements RequestsManager
+class CheckTicketRequest extends GetMessageRequest implements RequestsManager, SetTimeoutHandler
 {
     private $response;
+    /**
+     * @var ResponseSendMessage
+     */
+    private $xmlResponse;
+
     /**
      * @var TimeoutStrategyHandler
      */
     private $strategyTimeout;
-    /**
-     * @var string
-     */
-    private $messageId;
-
-    public function __construct(string $userToken, CacheInterface $cache, string $messageId)
-    {
-        parent::__construct($userToken, $cache);
-        $this->messageId = $messageId;
-    }
 
     public function isProcessFinished() : bool
     {
@@ -41,13 +36,24 @@ class CheckTicketRequest extends GetMessageRequest implements RequestsManager
         $this->strategyTimeout = $strategyHandler;
     }
 
-    /**
-     * @return bool
-     * @throws Exception
-     */
-    public function checkExist() : bool
+    public function send()
     {
         $this->strategyTimeout->handleTimeout();
-        return $this->xmlResponse->isCheckExist();
+        $this->xmlResponse = simplexml_load_string($this->response->Message->any, $this->getXmlResponseClass());
+    }
+
+    public function getTypeMessage(): string
+    {
+        return 'CheckTicket';
+    }
+
+    public function getXmlResponseClass(): string
+    {
+        return CheckTicketXmlResponse::class;
+    }
+
+    public function getResponse(): ResponseSendMessage
+    {
+        return $this->xmlResponse;
     }
 }

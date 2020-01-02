@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace Fns\GetMessage;
 
-use Fns\AbstractRequest;
+use Fns\ClientSoap;
+use Fns\Contracts\ResponseSendMessage;
 
-class GetMessageRequest extends AbstractRequest
+abstract class GetMessageRequest
 {
     private $messageId;
-    protected $xmlResponse;
+    protected $client;
 
     const PROCESSING = 'PROCESSING';
     const COMPLETED = 'COMPLETED';
@@ -30,4 +31,18 @@ class GetMessageRequest extends AbstractRequest
     {
         $this->messageId = $messageId;
     }
+
+    public function setClient(ClientSoap $clientSoap)
+    {
+        $this->client = $clientSoap->getClient();
+    }
+
+    abstract public function send();
+
+    abstract public function getTypeMessage() : string;
+
+    abstract public function getXmlResponseClass() : string;
+
+    abstract public function getResponse() : ResponseSendMessage;
+
 }
