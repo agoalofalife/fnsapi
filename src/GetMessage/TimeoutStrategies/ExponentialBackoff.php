@@ -13,6 +13,11 @@ class ExponentialBackoff implements TimeoutStrategyHandler
      */
     private $manager;
 
+    private $expMinDelayMicSeconds = 400;
+    private $expMaxDelayMicSeconds = 60000;
+    private $expFactor = 2.71828;
+    private $expJitter = 0.1;
+
     public function __construct(RequestsManager $manager)
     {
         $this->manager = $manager;
@@ -20,25 +25,21 @@ class ExponentialBackoff implements TimeoutStrategyHandler
 
     public function handleTimeout()
     {
-        $expMinDelay = 100;
-        $expMaxDelay = 60000;
-        $expFactor = 2.71828;
-        $expJitter =  0.1;
-        $delay = $expMinDelay;
+        $delay = $this->expMinDelayMicSeconds;
 
         while (true) {
             $this->manager->executeRequest();
             if ($this->manager->isProcessFinished()) {
                 break;
             }
-
+            dump((int)$delay);die();
             usleep((int)$delay);
-            $delay = $delay * $expFactor;
-            if ($delay > $expMaxDelay) {
+            $delay = $delay * $this->expFactor;
+            if ($delay > $this->expMaxDelayMicSeconds) {
                 throw new Exception('Timeout on server side expired');
 //                $delay = $expMaxDelay;
             }
-            $delay += cumnormdist($delay * $expJitter);
+            $delay += cumnormdist($delay * $this->expJitter);
         }
     }
 }
