@@ -6,12 +6,12 @@ namespace Fns;
 use Psr\SimpleCache\CacheInterface;
 use SoapClient;
 
-abstract class AbstractRequest
+class ClientSoap
 {
+    private $storage;
+    private $userToken;
+    private $client;
     private $wsdl = 'https://openapi.nalog.ru:8090/open-api/ais3/KktService/0.1?wsdl';
-    protected $storage;
-    protected $userToken;
-    protected $client;
 
     public function __construct(string $userToken, CacheInterface $cache)
     {
@@ -20,6 +20,7 @@ abstract class AbstractRequest
         $this->client = new SoapClient(
             $this->wsdl,
             [
+                'trace'             => true,
                 'stream_context' => stream_context_create(['http' => ['header' => $this->getHeaderString()]])
             ]
         );
@@ -35,5 +36,10 @@ abstract class AbstractRequest
         );
     }
 
-    abstract protected function getXml() : array;
+    public function getClient() : SoapClient
+    {
+        return $this->client;
+    }
 }
+
+

@@ -6,16 +6,16 @@ namespace Fns\GetMessage;
 use Fns\Contracts\ResponseSendMessage;
 use SimpleXMLElement;
 
-class CheckTicketXmlResponse extends SimpleXMLElement implements ResponseSendMessage
+class GetTicketXmlResponse extends SimpleXMLElement implements ResponseSendMessage
 {
     private function getXpathServerCodeString() : string
     {
-        return '//tns:CheckTicketResponse/tns:Result/tns:Code/text()';
+        return '//tns:GetTicketResponse/tns:Result/tns:Code/text()';
     }
 
     private function getXpathMessageString() : string
     {
-        return '//tns:CheckTicketResponse/tns:Result/tns:Message/text()';
+        return '//tns:GetTicketResponse/tns:Result/tns:Message/text()';
     }
 
     public function isError() : bool
