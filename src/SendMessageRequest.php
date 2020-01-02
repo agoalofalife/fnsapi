@@ -3,30 +3,44 @@ declare(strict_types=1);
 
 namespace Fns;
 
-class SendMessageRequest extends AbstractRequest
+use Fns\Contracts\ResponseSendMessage;
+use Fns\GetMessage\GetMessageRequest;
+
+class SendMessageRequest
 {
     private $ticket;
-    private $typeRequest;
+
+    /**
+     * @var ClientSoap
+     */
+    private $client;
+    /**
+     * @var GetMessageRequest
+     */
+    private $messageRequest;
+
+    public function __construct(ClientSoap $clientSoap, GetMessageRequest $messageRequest)
+    {
+        $this->client = $clientSoap->getClient();
+        $this->messageRequest = $messageRequest;
+        $this->messageRequest->setClient($clientSoap);
+    }
 
     protected function getXml() : array
     {
+        $type = $this->messageRequest->getTypeMessage();
         return [[
             'Message' => [
                 'any' =>
-                    "<{$this->typeRequest}Request 
+                    "<{$type}Request 
                     xmlns=\"urn://x-artefacts-gnivc-ru/ais3/kkt/KktTicketService/types/1.0\"
                     xmlns:tns=\"urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/types/1.0\">
-                        <tns:{$this->typeRequest}Info>
+                        <tns:{$type}Info>
                                 {$this->ticket->asXml()}
-                        </tns:{$this->typeRequest}Info>
-                    </{$this->typeRequest}Request>"
+                        </tns:{$type}Info>
+                    </{$type}Request>"
             ]
         ]];
-    }
-
-    private function setTypeRequest(string $type)
-    {
-        $this->typeRequest = $type;
     }
 
     public function setTicket(Ticket $ticket)
@@ -34,15 +48,11 @@ class SendMessageRequest extends AbstractRequest
         $this->ticket = $ticket;
     }
 
-    public function checkTicket() : string
+    public function execute() : ResponseSendMessage
     {
-        $this->setTypeRequest('CheckTicket');
-        return $this->client->__soapCall("SendMessage", $this->getXml())->MessageId;
-    }
-
-    public function getTicket() : string
-    {
-        $this->setTypeRequest('GetTicket');
-        return $this->client->__soapCall("SendMessage", $this->getXml())->MessageId;
+        $messageId = $this->client->__soapCall("SendMessage", $this->getXml())->MessageId;
+        $this->messageRequest->setMessageId($messageId);
+        $this->messageRequest->send();
+        return $this->messageRequest->getResponse();
     }
 }
