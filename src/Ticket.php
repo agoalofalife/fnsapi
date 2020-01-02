@@ -207,6 +207,10 @@ class Ticket implements OutXml
         return $this;
     }
 
+    /**
+     * Get xml only ticket
+     * @return string
+     */
     public function asXml() : string
     {
         return "<tns:Sum>{$this->getSum()}</tns:Sum>

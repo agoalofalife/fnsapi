@@ -14,8 +14,18 @@ class ExponentialBackoff implements TimeoutStrategyHandler
      */
     private $manager;
 
+    /**
+     * Start integer value in microseconds
+     * @var int
+     */
     private $expMinDelayMicroSeconds = 500000;
+
+    /**
+     * Max integer value in microseconds
+     * @var int
+     */
     private $expMaxDelayMicroSeconds = 60000000;
+
     private $expFactor = 2.71828;
     private $expJitter = 0.1;
 
@@ -33,12 +43,11 @@ class ExponentialBackoff implements TimeoutStrategyHandler
             if ($this->manager->isProcessFinished()) {
                 break;
             }
-            echo $delay . PHP_EOL;
+
             usleep((int)$delay);
             $delay = $delay * $this->expFactor;
             if ((int)$delay > $this->expMaxDelayMicroSeconds) {
                 throw new Exception('Timeout on server side expired');
-//                $delay = $expMaxDelay;
             }
             $delay += cumnormdist($delay * $this->expJitter);
         }
