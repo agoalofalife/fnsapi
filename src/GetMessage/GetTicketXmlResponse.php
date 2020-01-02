@@ -15,7 +15,7 @@ class GetTicketXmlResponse extends SimpleXMLElement implements ResponseSendMessa
 
     private function getXpathMessageString() : string
     {
-        return '//tns:GetTicketResponse/tns:Result/tns:Message/text()';
+        return '//tns:GetTicketResponse/tns:Result/tns:Ticket/text()';
     }
 
     public function isError() : bool
