@@ -20,7 +20,6 @@ class ClientSoap
         $this->client = new SoapClient(
             $this->wsdl,
             [
-                'trace'             => true,
                 'stream_context' => stream_context_create(['http' => ['header' => $this->getHeaderString()]])
             ]
         );
@@ -41,5 +40,3 @@ class ClientSoap
         return $this->client;
     }
 }
-
-
