@@ -19,7 +19,7 @@ class AuthRequest
     public function __construct(string $masterToken, CacheInterface $cache)
     {
         $this->masterToken = $masterToken;
-        $this->client = new SoapClient($this->wsdl);
+        $this->setSoapClient();
         $this->storage = $cache;
     }
 
@@ -44,7 +44,7 @@ class AuthRequest
     private function setToken(string $token, string $expireTime) : bool
     {
         if ($this->isTokenExist() === false) {
-            return $this->storage->set($this->nameToken, $token, strtotime($expireTime)-time());
+            return $this->storage->set($this->nameToken, $token, strtotime($expireTime) - time());
         }
         return true;
     }
@@ -52,6 +52,7 @@ class AuthRequest
     public function authenticate() : void
     {
         $response = $this->client->__soapCall("GetMessage", $this->getBodyXml());
+
         $this->xmlResponse = simplexml_load_string($response->Message->any, AuthXmlResponse::class);
 
         if ($this->xmlResponse->isError()) {
@@ -71,5 +72,18 @@ class AuthRequest
             return $this->storage->get($this->nameToken);
         }
         return '';
+    }
+
+    public function getSoapClient() : SoapClient
+    {
+        return $this->client;
+    }
+
+    public function setSoapClient(SoapClient $client = null)
+    {
+        if (is_null($client)) {
+            $client = new SoapClient($this->wsdl);
+        }
+        $this->client = $client;
     }
 }
