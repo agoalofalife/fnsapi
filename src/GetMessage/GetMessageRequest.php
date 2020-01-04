@@ -14,11 +14,20 @@ abstract class GetMessageRequest
     const PROCESSING = 'PROCESSING';
     const COMPLETED = 'COMPLETED';
 
+    /**
+     * Check response status is Completed
+     * @param $response
+     * @return bool
+     */
     protected function isCompleted($response) : bool
     {
         return $response->ProcessingStatus === self::COMPLETED;
     }
 
+    /**
+     * Return array xml with parameter MessageId
+     * @return array
+     */
     protected function getXml() : array
     {
         return [['MessageId' =>  $this->messageId]];
@@ -39,8 +48,16 @@ abstract class GetMessageRequest
 
     abstract public function send();
 
+    /**
+     * Get message type:CheckTicket or GetTicket
+     * @return string
+     */
     abstract public function getTypeMessage() : string;
 
+    /**
+     * Get class child SimpleXMLElement for handler response
+     * @return string
+     */
     abstract public function getXmlResponseClass() : string;
 
     abstract public function getResponse() : ResponseSendMessage;
