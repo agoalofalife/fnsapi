@@ -100,7 +100,7 @@ API ФНС реализованно через асинхроннсть.
 $message = new \Fns\GetMessage\GetTicketRequest();
 $message->setTimeoutStrategy(new ExponentialBackoff($message));
 
-$request = new SendMessageRequest($client, $getMessage);
+$request = new SendMessageRequest($client, $message);
 $request->setTicket($ticket);
 $response = $request->execute();
 
