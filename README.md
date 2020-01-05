@@ -97,8 +97,8 @@ API ФНС реализованно через асинхроннсть.
 - Получить информацию по запросу код и тело ответа.
 
 ```php
-$getMessage = new \Fns\GetMessage\GetTicketRequest();
-$getMessage->setTimeoutStrategy(new ExponentialBackoff($message));
+$message = new \Fns\GetMessage\GetTicketRequest();
+$message->setTimeoutStrategy(new ExponentialBackoff($message));
 
 $request = new SendMessageRequest($client, $getMessage);
 $request->setTicket($ticket);
