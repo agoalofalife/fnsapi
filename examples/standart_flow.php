@@ -2,6 +2,7 @@
 use Fns\GetMessage\TimeoutStrategies\ExponentialBackoff;
 use Fns\SendMessageRequest;
 
+// PSR-16
 $cache = new Sarahman\SimpleCache\FileSystemCache(__DIR__);
 $master_token = '';
 $auth = new Fns\Auth\AuthRequest($master_token, $cache);
