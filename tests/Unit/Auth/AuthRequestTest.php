@@ -84,7 +84,7 @@ class AuthRequestTest extends TestCase
         string $token,
         $date = '2020-01-04T20:16:05 +03:00',
         bool $isError = false
-    ) : object {
+    ) {
         $bodyDependOnErrorParam = "<tns:Result><tns:Token>{$token}</tns:Token>
                     <tns:ExpireTime>{$date}</tns:ExpireTime>
                     </tns:Result>";
