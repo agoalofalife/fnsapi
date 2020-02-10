@@ -8,28 +8,37 @@ use SimpleXMLElement;
 
 class GetTicketXmlResponse extends SimpleXMLElement implements ResponseSendMessage
 {
-    private function getXpathServerCodeString() : string
+    private function getXpathServerCodeString(): string
     {
         return '//tns:GetTicketResponse/tns:Result/tns:Code/text()';
     }
 
-    private function getXpathMessageString() : string
+    private function getXpathMessageString(): string
     {
         return '//tns:GetTicketResponse/tns:Result/tns:Ticket/text()';
     }
 
-    public function isError() : bool
+    public function isError(): bool
     {
         return $this->getCode() !== 200;
     }
 
     public function getCode(): int
     {
-        return (int)$this->xpath($this->getXpathServerCodeString())[0];
+        return (int) $this->xpath($this->getXpathServerCodeString())[0];
     }
 
     public function getBody(): string
     {
-        return (string)$this->xpath($this->getXpathMessageString())[0];
+        if ($this->isEmpty()) {
+            return '';
+        } else {
+            return (string) $this->xpath($this->getXpathMessageString())[0];
+        }
+    }
+
+    private function isEmpty()
+    {
+        return empty($this->xpath($this->getXpathMessageString()));
     }
 }
