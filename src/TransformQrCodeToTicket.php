@@ -2,6 +2,8 @@
 
 namespace Fns;
 
+use Carbon\Carbon;
+
 class TransformQrCodeToTicket
 {
     private $ticket;
@@ -71,7 +73,7 @@ class TransformQrCodeToTicket
 
     private function toDateTimeLocalString(string $date): string
     {
-        return \DateTime::createFromFormat('Ymd\THis', $date)->format('Y-m-d\TH:i:s');
+        return Carbon::parse($date)->toDateTimeLocalString();
     }
 
     private function getInteger($value): int
