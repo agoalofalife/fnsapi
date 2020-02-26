@@ -68,7 +68,7 @@ class TransformQrCodeToTicket
 
     private function aroundSum(string $sum): int
     {
-        return $sum * 100;
+        return round(($sum * 100), 0);
     }
 
     private function toDateTimeLocalString(string $date): string
