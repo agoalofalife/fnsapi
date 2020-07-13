@@ -22,7 +22,7 @@ class TransformQrCodeToTicket
             'method' => 'setFn',
             'type'   => 'getInteger'
         ],
-        '/(s\=)([0-9]+\.?[0-9]+)/' => [
+        '/(s\=)([0-9]+(\.[0-9]+)?)/' => [
             'method' => 'setSum',
             'filter' => 'aroundSum',
             'type'   => 'getInteger'
