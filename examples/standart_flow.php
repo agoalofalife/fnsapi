@@ -23,6 +23,8 @@ $client = new \Fns\ClientSoap('unique', $cache);
 
 $message = new \Fns\GetMessage\GetTicketRequest();
 $message->setTimeoutStrategy(new ExponentialBackoff($message));
+ // или добавить максимальное значение
+$message->setTimeoutStrategy(new ExponentialBackoff($message, 600000000));
 
 $request = new SendMessageRequest($client, $message);
 $request->setTicket($ticket);

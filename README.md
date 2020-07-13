@@ -103,6 +103,8 @@ API ФНС реализованно через асинхроннсть.
 ```php
 $message = new \Fns\GetMessage\GetTicketRequest();
 $message->setTimeoutStrategy(new ExponentialBackoff($message));
+// можно установить свое максимальное значение time out
+$message->setTimeoutStrategy(new ExponentialBackoff($message), 600000000);
 
 $request = new SendMessageRequest($client, $message);
 $request->setTicket($ticket);

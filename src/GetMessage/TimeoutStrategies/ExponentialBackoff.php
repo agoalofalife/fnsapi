@@ -24,14 +24,15 @@ class ExponentialBackoff implements TimeoutStrategyHandler
      * Max integer value in microseconds
      * @var int
      */
-    private $expMaxDelayMicroSeconds = 60000000;
+    private $expMaxDelayMicroSeconds;
 
     private $expFactor = 2.71828;
     private $expJitter = 0.1;
 
-    public function __construct(RequestsManager $manager)
+    public function __construct(RequestsManager $manager, $maxDelay = 60000000)
     {
         $this->manager = $manager;
+        $this->expMaxDelayMicroSeconds = $maxDelay;
     }
 
     public function handleTimeout()
