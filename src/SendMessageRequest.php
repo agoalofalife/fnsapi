@@ -5,6 +5,7 @@ namespace Fns;
 
 use Fns\Contracts\ResponseSendMessage;
 use Fns\GetMessage\GetMessageRequest;
+use Fns\Server\FactoryServer;
 
 class SendMessageRequest
 {
@@ -18,11 +19,21 @@ class SendMessageRequest
      * @var GetMessageRequest
      */
     private $messageRequest;
+    private $server;
 
-    public function __construct(ClientSoap $clientSoap, GetMessageRequest $messageRequest)
+    public function __construct(
+        ClientSoap $clientSoap,
+        GetMessageRequest $messageRequest,
+        int $version = 1
+    )
     {
+        $this->server = (new FactoryServer())->createServer($version);
+
+        $clientSoap->setWsdl($this->server->getWsdl());
         $this->client = $clientSoap->getClient();
+
         $this->messageRequest = $messageRequest;
+        $this->messageRequest->setXmlResponseClass($this->server->getTicketXmlResponse());
         $this->messageRequest->setClient($clientSoap);
     }
 
@@ -32,9 +43,7 @@ class SendMessageRequest
         return [[
             'Message' => [
                 'any' =>
-                    "<{$type}Request 
-                    xmlns=\"urn://x-artefacts-gnivc-ru/ais3/kkt/KktTicketService/types/1.0\"
-                    xmlns:tns=\"urn://x-artefacts-gnivc-ru/inplat/servin/OpenApiAsyncMessageConsumerService/types/1.0\">
+                    "<{$type}Request {$this->server->getNamespaces()}>
                         <tns:{$type}Info>
                                 {$this->ticket->asXml()}
                         </tns:{$type}Info>
@@ -51,6 +60,7 @@ class SendMessageRequest
     public function execute() : ResponseSendMessage
     {
         $messageId = $this->client->__soapCall("SendMessage", $this->getXml())->MessageId;
+
         $this->messageRequest->setMessageId($messageId);
         $this->messageRequest->send();
         return $this->messageRequest->getResponse();

@@ -10,6 +10,7 @@ use Fns\Contracts\TimeoutStrategyHandler;
 
 class GetTicketRequest extends GetMessageRequest implements RequestsManager, SetTimeoutHandler
 {
+    private $handlerXmlResponse = GetTicketXmlResponse::class;
     private $response;
 
     /**
@@ -36,7 +37,12 @@ class GetTicketRequest extends GetMessageRequest implements RequestsManager, Set
 
     public function getXmlResponseClass(): string
     {
-        return GetTicketXmlResponse::class;
+        return $this->handlerXmlResponse;
+    }
+
+    public function setXmlResponseClass(string $name)
+    {
+        $this->handlerXmlResponse = $name;
     }
 
     public function getResponse(): ResponseSendMessage

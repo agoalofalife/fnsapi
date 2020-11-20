@@ -60,6 +60,8 @@ abstract class GetMessageRequest
      */
     abstract public function getXmlResponseClass() : string;
 
+    abstract public function setXmlResponseClass(string $name);
+
     abstract public function getResponse() : ResponseSendMessage;
 
 }

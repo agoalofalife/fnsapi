@@ -22,6 +22,7 @@ class SendMessageRequestTest extends TestCase
         $mockClient = $this->mock(ClientSoap::class);
 
         $mockClient->shouldReceive('getClient')->once()->andReturn($mockNativeClientSoap);
+        $mockClient->shouldReceive('setWsdl')->once();
         $mockNativeClientSoap->shouldReceive('__soapCall')
             ->once()
             ->andReturn((object)['MessageId' => $randomMessageId]);
@@ -33,6 +34,8 @@ class SendMessageRequestTest extends TestCase
         $mockGetMessageRequest->shouldReceive('setMessageId')->with($randomMessageId);
         $mockGetMessageRequest->shouldReceive('send')->once();
         $mockGetMessageRequest->shouldReceive('getResponse')->once();
+        $mockGetMessageRequest->shouldReceive('setXmlResponseClass')->once();
+
 
         $sender = new SendMessageRequest($mockClient, $mockGetMessageRequest);
         $sender->setTicket($mockTicket);

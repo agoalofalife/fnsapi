@@ -11,18 +11,12 @@ class ClientSoap
     private $storage;
     private $userToken;
     private $client;
-    private $wsdl = 'https://openapi.nalog.ru:8090/open-api/ais3/KktService/0.1?wsdl';
+    private $wsdl;
 
     public function __construct(string $userToken, CacheInterface $cache)
     {
         $this->storage = $cache;
         $this->userToken = $userToken;
-        $this->client = new SoapClient(
-            $this->wsdl,
-            [
-                'stream_context' => stream_context_create(['http' => ['header' => $this->getHeaderString()]])
-            ]
-        );
     }
 
     private function getHeaderString() : string
@@ -37,6 +31,17 @@ class ClientSoap
 
     public function getClient() : SoapClient
     {
-        return $this->client;
+        return $this->client = new SoapClient(
+            $this->wsdl,
+            [
+                "trace"          => 1,
+                'stream_context' => stream_context_create(['http' => ['header' => $this->getHeaderString()]])
+            ]
+        );
+    }
+
+    public function setWsdl(string $wsdl)
+    {
+        $this->wsdl = $wsdl;
     }
 }

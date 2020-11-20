@@ -17,7 +17,8 @@ class ClientSoapTest extends TestCase
         $regexToken = "FNS-OpenApi-Token:{$tempToken}";
         $regexUserToken = "FNS-OpenApi-UserToken:{$userId}";
         $mockStorage = $this->mock(CacheInterface::class);
-        $mockStorage->shouldReceive('get')->once()->andReturn($tempToken);
+        $mockStorage->shouldReceive('get')->with('temp_token')->times(2)->andReturn($tempToken);
+
         $client = new ClientSoap($userId, $mockStorage);
         $this->assertInstanceOf(\SoapClient::class, $client->getClient());
         $header = stream_context_get_options($client->getClient()->_stream_context)['http']['header'];
