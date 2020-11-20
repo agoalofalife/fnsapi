@@ -16,6 +16,8 @@ class CheckTicketRequest extends GetMessageRequest implements RequestsManager, S
      */
     private $xmlResponse;
 
+    private $handlerXmlResponse = CheckTicketXmlResponse::class;
+
     /**
      * @var TimeoutStrategyHandler
      */
@@ -49,11 +51,16 @@ class CheckTicketRequest extends GetMessageRequest implements RequestsManager, S
 
     public function getXmlResponseClass(): string
     {
-        return CheckTicketXmlResponse::class;
+        return $this->handlerXmlResponse;
     }
 
     public function getResponse(): ResponseSendMessage
     {
         return $this->xmlResponse;
+    }
+
+    public function setXmlResponseClass(string $name)
+    {
+        $this->handlerXmlResponse = $name;
     }
 }
