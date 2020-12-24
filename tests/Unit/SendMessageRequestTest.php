@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use Fns\ClientSoap;
-use Fns\GetMessage\GetMessageRequest;
+use Fns\GetMessage\Request\GetMessageRequest;
 use Fns\SendMessageRequest;
 use Fns\Ticket;
 use SoapClient;
@@ -22,11 +22,9 @@ class SendMessageRequestTest extends TestCase
         $mockClient = $this->mock(ClientSoap::class);
 
         $mockClient->shouldReceive('getClient')->once()->andReturn($mockNativeClientSoap);
-        $mockClient->shouldReceive('setWsdl')->once();
         $mockNativeClientSoap->shouldReceive('__soapCall')
             ->once()
             ->andReturn((object)['MessageId' => $randomMessageId]);
-
 
         $mockGetMessageRequest = $this->mock(GetMessageRequest::class);
         $mockGetMessageRequest->shouldReceive('setClient')->with($mockClient);
@@ -34,8 +32,6 @@ class SendMessageRequestTest extends TestCase
         $mockGetMessageRequest->shouldReceive('setMessageId')->with($randomMessageId);
         $mockGetMessageRequest->shouldReceive('send')->once();
         $mockGetMessageRequest->shouldReceive('getResponse')->once();
-        $mockGetMessageRequest->shouldReceive('setXmlResponseClass')->once();
-
 
         $sender = new SendMessageRequest($mockClient, $mockGetMessageRequest);
         $sender->setTicket($mockTicket);

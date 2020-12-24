@@ -17,17 +17,17 @@ class Product
         return $this->name;
     }
 
-    public function price():int
+    public function getPrice():int
     {
         return $this->price;
     }
 
-    public function quantity() : int
+    public function getQuantity() : int
     {
         return $this->quantity;
     }
 
-    public function cost() : int
+    public function getCost() : int
     {
         return $this->sum;
     }

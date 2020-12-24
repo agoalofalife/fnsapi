@@ -21,12 +21,17 @@ class Receipt
         return $this->products;
     }
 
-    public function getAddress():string
+    public function getAddress():?string
     {
-        return $this->data->content->retailPlaceAddress ?? $this->data->address ?? '';
+        return $this->data->content->retailPlaceAddress ?? $this->data->address ?? null;
     }
 
-    public function shopInn() :int
+    public function getShopName():?string
+    {
+        return $this->data->user ?? null;
+    }
+
+    public function getShopInn() :int
     {
         return $this->data->content->userInn;
     }
