@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Fns\GetMessage;
+namespace Fns\GetMessage\Request;
 
 use Fns\ClientSoap;
 use Fns\Contracts\ResponseSendMessage;
@@ -30,7 +30,7 @@ abstract class GetMessageRequest
      */
     protected function getXml() : array
     {
-        return [['MessageId' =>  $this->messageId]];
+        return [['MessageId' => $this->messageId]];
     }
 
     /**
@@ -60,8 +60,5 @@ abstract class GetMessageRequest
      */
     abstract public function getXmlResponseClass() : string;
 
-    abstract public function setXmlResponseClass(string $name);
-
     abstract public function getResponse() : ResponseSendMessage;
-
 }

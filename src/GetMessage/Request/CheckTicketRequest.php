@@ -1,23 +1,38 @@
 <?php
 declare(strict_types=1);
 
-namespace Fns\GetMessage;
+namespace Fns\GetMessage\Request;
 
 use Fns\Contracts\RequestsManager;
 use Fns\Contracts\ResponseSendMessage;
 use Fns\Contracts\SetTimeoutHandler;
 use Fns\Contracts\TimeoutStrategyHandler;
+use Fns\GetMessage\Response\CheckTicketXmlResponse;
 
-class GetTicketRequest extends GetMessageRequest implements RequestsManager, SetTimeoutHandler
+class CheckTicketRequest extends GetMessageRequest implements RequestsManager, SetTimeoutHandler
 {
-    private $handlerXmlResponse = GetTicketXmlResponse::class;
     private $response;
-
     /**
      * @var ResponseSendMessage
      */
     private $xmlResponse;
+
+    private $handlerXmlResponse = CheckTicketXmlResponse::class;
+
+    /**
+     * @var TimeoutStrategyHandler
+     */
     private $strategyTimeout;
+
+    public function isProcessFinished() : bool
+    {
+        return $this->isCompleted($this->response);
+    }
+
+    public function executeRequest() : void
+    {
+        $this->response = $this->client->__soapCall('GetMessage', $this->getXml());
+    }
 
     public function setTimeoutStrategy(TimeoutStrategyHandler $strategyHandler)
     {
@@ -32,31 +47,16 @@ class GetTicketRequest extends GetMessageRequest implements RequestsManager, Set
 
     public function getTypeMessage(): string
     {
-        return 'GetTicket';
+        return 'CheckTicket';
     }
 
     public function getXmlResponseClass(): string
     {
-        return $this->handlerXmlResponse;
-    }
-
-    public function setXmlResponseClass(string $name)
-    {
-        $this->handlerXmlResponse = $name;
+        return CheckTicketXmlResponse::class;
     }
 
     public function getResponse(): ResponseSendMessage
     {
         return $this->xmlResponse;
-    }
-
-    public function isProcessFinished(): bool
-    {
-        return $this->isCompleted($this->response);
-    }
-
-    public function executeRequest(): void
-    {
-        $this->response = $this->client->__soapCall("GetMessage", $this->getXml());
     }
 }

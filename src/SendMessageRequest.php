@@ -4,8 +4,7 @@ declare(strict_types=1);
 namespace Fns;
 
 use Fns\Contracts\ResponseSendMessage;
-use Fns\GetMessage\GetMessageRequest;
-use Fns\Server\FactoryServer;
+use Fns\GetMessage\Request\GetMessageRequest;
 
 class SendMessageRequest
 {
@@ -23,27 +22,22 @@ class SendMessageRequest
 
     public function __construct(
         ClientSoap $clientSoap,
-        GetMessageRequest $messageRequest,
-        int $version = 1
-    )
-    {
-        $this->server = (new FactoryServer())->createServer($version);
-
-        $clientSoap->setWsdl($this->server->getWsdl());
+        GetMessageRequest $messageRequest
+    ) {
         $this->client = $clientSoap->getClient();
 
         $this->messageRequest = $messageRequest;
-        $this->messageRequest->setXmlResponseClass($this->server->getTicketXmlResponse());
         $this->messageRequest->setClient($clientSoap);
     }
 
     protected function getXml() : array
     {
         $type = $this->messageRequest->getTypeMessage();
+
         return [[
             'Message' => [
-                'any' =>
-                    "<{$type}Request {$this->server->getNamespaces()}>
+                'any' => "<{$type}Request xmlns=\"urn://x-artefacts-gnivc-ru/ais3/kkt/KktTicketService/types/1.0\"
+                    xmlns:tns=\"urn://x-artefacts-gnivc-ru/ais3/kkt/KktTicketService/types/1.0\">
                         <tns:{$type}Info>
                                 {$this->ticket->asXml()}
                         </tns:{$type}Info>
@@ -59,7 +53,7 @@ class SendMessageRequest
 
     public function execute() : ResponseSendMessage
     {
-        $messageId = $this->client->__soapCall("SendMessage", $this->getXml())->MessageId;
+        $messageId = $this->client->__soapCall('SendMessage', $this->getXml())->MessageId;
 
         $this->messageRequest->setMessageId($messageId);
         $this->messageRequest->send();
