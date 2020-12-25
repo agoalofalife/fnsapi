@@ -28,12 +28,12 @@ class Receipt
 
     public function getShopName():?string
     {
-        return $this->data->user ?? null;
+        return $this->data->content->user ?? null;
     }
 
     public function getShopInn() :int
     {
-        return $this->data->content->userInn;
+        return (int)$this->data->content->userInn;
     }
 
     public function getCashierName() :?string

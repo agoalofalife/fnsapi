@@ -19,16 +19,16 @@ class Product
 
     public function getPrice():int
     {
-        return $this->price;
+        return (int)$this->price;
     }
 
     public function getQuantity() : int
     {
-        return $this->quantity;
+        return (int)$this->quantity;
     }
 
     public function getCost() : int
     {
-        return $this->sum;
+        return (int)$this->sum;
     }
 }
