@@ -19,7 +19,6 @@ class AuthRequest
     public function __construct(string $masterToken, CacheInterface $cache)
     {
         $this->masterToken = $masterToken;
-        $this->setSoapClient();
         $this->storage = $cache;
     }
 
