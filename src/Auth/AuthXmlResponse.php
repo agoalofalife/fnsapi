@@ -9,17 +9,17 @@ class AuthXmlResponse extends SimpleXMLElement
 {
     private function getXpathFaultString() : string
     {
-        return '//tns:AuthResponse/tns:Fault/tns:Message/text()';
+        return '//ns2:AuthResponse/ns2:Fault/ns2:Message/text()';
     }
 
     private function getXpathTokenString() : string
     {
-        return  '//tns:AuthResponse/tns:Result/tns:Token/text()';
+        return  '//ns2:AuthResponse/ns2:Result/ns2:Token/text()';
     }
 
     private function getXpathExpireTimeString() : string
     {
-        return  '//tns:AuthResponse/tns:Result/tns:ExpireTime/text()';
+        return  '//ns2:AuthResponse/ns2:Result/ns2:ExpireTime/text()';
     }
 
     public function isError() : bool
