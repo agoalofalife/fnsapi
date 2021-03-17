@@ -11,7 +11,7 @@ class ClientSoap
     private $storage;
     private $userToken;
     private $client;
-    private $wsdl = 'https://openapi.nalog.ru:8090/open-api/ais3/KktTestService/0.1?wsdl';
+    private $wsdl = 'https://openapi.nalog.ru:8090/open-api/ais3/KktService/0.1?wsdl';
 
     public function __construct(string $userToken, CacheInterface $cache, $debug = false)
     {
