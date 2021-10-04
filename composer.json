@@ -1,6 +1,6 @@
 {
     "name": "agoalofalife/fnsapi",
-    "description": "Interaction with API FNS",
+    "description": "Взаимодействие с API ФНС по протоколу SOAP(кассовые чеки)",
     "keywords": [
         "fns",
         "soap"
